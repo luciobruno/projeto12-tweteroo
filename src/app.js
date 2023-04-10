@@ -13,4 +13,16 @@ app.post("/sign-up", (req, res)=>{
     res.send("OK")
 })
 
+app.post("/tweets", (req,res)=>{
+    const {username,tweet} = req.body
+    const usuario = usuarios.find(usuario => usuario.username === username)
+    if(usuario === undefined){
+        res.send("UNAUTHORIZED")
+    }else{
+        const avatar = usuario.avatar
+        tweets.push({username:username, avatar:avatar, tweet:tweet})
+        res.send("OK")
+    }
+})
+
 app.listen(5000);
