@@ -10,7 +10,7 @@ const tweets = []
 
 app.post("/sign-up", (req, res)=>{
     const {username, avatar} = req.body
-    if(!username || !avatar || typeof username !== "string" || typeof avatar !== "string"){
+    if(!username|| !avatar || typeof username !== "string" || typeof avatar !== "string"){
         res.status(400).send("Todos os campos são obrigatórios!")
         return
     }
@@ -19,7 +19,7 @@ app.post("/sign-up", (req, res)=>{
 })
 
 app.post("/tweets", (req,res)=>{
-    const {username,tweet} = req.body
+    const { tweet, username } = req.body
     const usuario = usuarios.find(usuario => usuario.username === username)
     if(usuario === undefined){
         res.sendStatus(401)
@@ -35,7 +35,20 @@ app.post("/tweets", (req,res)=>{
 })
 
 app.get("/tweets", (req,res)=>{
-    const lastTweets = tweets.slice(-10)
+    const page = parseInt(req.query.page)
+    if(page === undefined || page<1){
+        res.status(400).send("Informe uma página válida!")
+        return
+    }
+    let max = tweets.length
+    let min = max - (10)
+    if(min < 0){
+        min = 0
+    }
+    if(page>1 && max > 0){
+        max = max - 10(page-1)
+    }
+    const lastTweets = tweets.slice(min,max)
     res.send(lastTweets)
 })
 
