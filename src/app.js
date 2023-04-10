@@ -15,14 +15,14 @@ app.post("/sign-up", (req, res)=>{
         return
     }
     usuarios.push(req.body)
-    res.sendStatus(201)
+    res.status(201).send("OK")
 })
 
 app.post("/tweets", (req,res)=>{
     const {username,tweet} = req.body
     const usuario = usuarios.find(usuario => usuario.username === username)
     if(usuario === undefined){
-        res.send("UNAUTHORIZED")
+        res.sendStatus(401)
         return
     }
     if(!username || !tweet || typeof username !== "string" || typeof tweet !== "string"){
@@ -31,12 +31,18 @@ app.post("/tweets", (req,res)=>{
     }
     const avatar = usuario.avatar
     tweets.push({username:username, avatar:avatar, tweet:tweet})
-    res.sendStatus(201)
+    res.status(201).send("OK")
 })
 
 app.get("/tweets", (req,res)=>{
     const lastTweets = tweets.slice(-10)
     res.send(lastTweets)
+})
+
+app.get("/tweets/:USERNAME", (req,res)=>{
+    const {USERNAME} = req.params
+    const userTweets = tweets.filter(tweet => tweet.username === USERNAME)
+    res.send(userTweets)
 })
 
 app.listen(5000);
