@@ -25,4 +25,9 @@ app.post("/tweets", (req,res)=>{
     }
 })
 
+app.get("/tweets", (req,res)=>{
+    const lastTweets = tweets.slice(-10)
+    res.send(lastTweets)
+})
+
 app.listen(5000);
