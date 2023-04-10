@@ -40,7 +40,7 @@ app.get("/tweets", (req,res)=>{
 })
 
 app.get("/tweets/:USERNAME", (req,res)=>{
-    const {USERNAME} = req.params
+    const { USERNAME } = req.params
     const userTweets = tweets.filter(tweet => tweet.username === USERNAME)
     res.send(userTweets)
 })
