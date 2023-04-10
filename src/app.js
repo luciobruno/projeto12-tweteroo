@@ -39,17 +39,18 @@ app.get("/tweets", (req,res)=>{
     if(page === undefined || page<1){
         res.status(400).send("Informe uma página válida!")
         return
+    }else{
+        let max = tweets.length - 10*(page-1)
+        let min = max - (10)
+        if(min < 0){
+            min = 0
+        }
+        if(max < 0){
+            max = 0
+        }
+        const lastTweets = tweets.slice(min,max)
+        res.send(lastTweets)
     }
-    let max = tweets.length
-    let min = max - (10)
-    if(min < 0){
-        min = 0
-    }
-    if(page>1 && max > 0){
-        max = max - 10(page-1)
-    }
-    const lastTweets = tweets.slice(min,max)
-    res.send(lastTweets)
 })
 
 app.get("/tweets/:USERNAME", (req,res)=>{
